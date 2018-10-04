@@ -27,8 +27,6 @@ from tempfile import mkstemp
 from os import access, X_OK, remove, fdopen
 from os.path import isfile, abspath, normpath, dirname, join, basename
 
-import requests
-from ipaddress import ip_address, ip_network
 from flask import Flask, request, abort
 
 
@@ -52,22 +50,6 @@ def index():
         config = loads(cfg.read())
 
     hooks = config.get('hooks_path', join(path, 'hooks'))
-
-    # Allow Github IPs only
-    if config.get('github_ips_only', True):
-        src_ip = ip_address(
-            u'{}'.format(request.access_route[0])  # Fix stupid ipaddress issue
-        )
-        whitelist = requests.get('https://api.github.com/meta').json()['hooks']
-
-        for valid_ip in whitelist:
-            if src_ip in ip_network(valid_ip):
-                break
-        else:
-            logging.error('IP {} not allowed'.format(
-                src_ip
-            ))
-            abort(403)
 
     # Enforce secret
     secret = config.get('enforce_secret', '')

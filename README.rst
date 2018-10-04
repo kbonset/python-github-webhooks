@@ -31,16 +31,11 @@ You can configure what the application does by copying the sample config file
 ::
 
     {
-        "github_ips_only": true,
         "enforce_secret": "",
         "return_scripts_info": true,
         "hooks_path": "/.../hooks/"
     }
 
-:github_ips_only: Restrict application to be called only by GitHub IPs. IPs
- whitelist is obtained from
- `GitHub Meta <https://developer.github.com/v3/meta/>`_
- (`endpoint <https://api.github.com/meta>`_). Default: ``true``.
 :enforce_secret: Enforce body signature with HTTP header ``X-Hub-Signature``.
  See ``secret`` at
  `GitHub WebHooks Documentation <https://developer.github.com/v3/repos/hooks/>`_.
