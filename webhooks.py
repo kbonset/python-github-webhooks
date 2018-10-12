@@ -17,7 +17,7 @@
 
 import logging
 from sys import stderr, hexversion
-logging.basicConfig(stream=stderr)
+logging.basicConfig(stream=stderr, level=logging.WARN)
 
 import hmac
 from hashlib import sha1
@@ -154,10 +154,10 @@ def index():
     ran = {}
     for s in scripts:
 
-        proc = Popen(
-            [s, tmpfile, event],
-            stdout=PIPE, stderr=PIPE
-        )
+        args = [s, tmpfile, event]
+        if branch:
+             args.append(branch)
+        proc = Popen(args, stdout=PIPE, stderr=PIPE)
         stdout, stderr = proc.communicate()
 
         ran[basename(s)] = {
